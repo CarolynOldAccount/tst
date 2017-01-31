@@ -288,7 +288,7 @@ public class Create extends JFrame implements Runnable {
     private void processInput() {
         keyboard.poll();
         mouse.poll();
-          
+          Graphics g = bs.getDrawGraphics();
         if (canvas != null) {
             if (point.x + 25 < 0) {
                 point.x = canvas.getWidth() - 1;
@@ -315,6 +315,7 @@ public class Create extends JFrame implements Runnable {
             lines.add(null);
             mouseDown = false; //if mouse id down
             drawingLine = false; //if started to draw
+            Draw(g);
         }
         // if 'C' is down, clear the lines
         if (keyboard.keyDownOnce(KeyEvent.VK_C)) {
@@ -351,7 +352,7 @@ public class Create extends JFrame implements Runnable {
         
         //Old ArrayList
         fDraw.AddLines(g);
-      //  lDraw.AddShapes(g);
+        lDraw.AddShapes(g);
         rDraw.AddShapes(g);
     }
 /***********************************************************/
@@ -359,13 +360,13 @@ public class Create extends JFrame implements Runnable {
     
         switch(actionCode){
             case 1:
-                fDraw.draw(g);
+                fDraw.draw(g, mouse);
                 break;
             case 2: case 3:
-                lDraw.draw(g, actionCode, str, mouseDown);
+                lDraw.draw(g, actionCode, str, end, mouseDown, mouse);
                 break;
             case 4:
-                rDraw.draw(g, str, mouseDown);
+                rDraw.draw(g, str, mouseDown, mouse);
                 break;
             default:
                 System.out.print("Draw Error\n");
