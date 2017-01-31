@@ -36,8 +36,8 @@ public class FreeDraw extends Tools{
         colorNow = c;
     }
     
-    public ArrayList<Point> getArrayLines() {
-        return lines;
+    public void setArrayLines( Point p) {
+        lines.add(p);
     }
     
     public void draw(Graphics g, CreateInput mouse) {
@@ -46,7 +46,8 @@ public class FreeDraw extends Tools{
     }   
     
     public void AddLines(Graphics g){
-    for (int i = 0; i < lines.size() - 1; ++i) {
+        System.out.print("FreeDR"+lines.size()+"\n");
+    for (int i = 0; i < lines.size() - 1; i++) {
             Point p1 = lines.get(i);
             Point p2 = lines.get(i + 1);
             g.setColor(color.get(i));
@@ -54,8 +55,8 @@ public class FreeDraw extends Tools{
             // for breaking up the lines when
             // there are two or more lines
             // that are not connected
+          
             if (!(p1 == null || p2 == null)) {
-                System.out.print("Line:"+p1.x+p1.y+p2.x+p2.y+"\n");
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         }

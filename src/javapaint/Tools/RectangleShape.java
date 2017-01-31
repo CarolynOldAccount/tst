@@ -20,6 +20,7 @@ import javapaint.CreateInput;
  */
 public class RectangleShape extends Tools{
     
+    private final ArrayList<Rectangle> shapesBuffer = new ArrayList<>();
     private final ArrayList<Rectangle> shapes = new ArrayList<>();
     private final ArrayList<Color> color = new ArrayList<>();
     public Point str = new Point(0, 0), end = new Point(0, 0);    
@@ -48,6 +49,8 @@ public class RectangleShape extends Tools{
         int height = Math.abs(str.y - point.y);
                 
         Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
+        g.setColor(g.getColor());
+        shapes.add(rectangle);
        if(relase){
         g.setColor(g.getColor());
         shapes.add(rectangle);
@@ -56,7 +59,8 @@ public class RectangleShape extends Tools{
     }
     
     public void AddShapes(Graphics g){
-        for (int i = 0; i < shapes.size() - 1; ++i) {
+        System.out.print(shapes.size()+", boc \n");
+        for (int i = 0; i < shapes.size() - 1; i++) {
               Rectangle r = shapes.get(i);
               g.setColor(color.get(i));
             // Adding a null into the list is used

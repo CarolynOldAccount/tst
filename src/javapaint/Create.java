@@ -311,12 +311,16 @@ public class Create extends JFrame implements Runnable {
         if (mouse.buttonDown(MouseEvent.BUTTON1)) {
             str = mouse.getPosition();
             mouseDown = true;
-        } else if (drawingLine) {
-            lines.add(null);
+        } else if (drawingLine){
             mouseDown = false; //if mouse id down
             drawingLine = false; //if started to draw
-            Draw(g);
+           if(actionCode == 1){
+                fDraw.setArrayLines(null);
+            }else{
+               Draw(g);
+            }
         }
+        
         // if 'C' is down, clear the lines
         if (keyboard.keyDownOnce(KeyEvent.VK_C)) {
             clear();
@@ -348,7 +352,7 @@ public class Create extends JFrame implements Runnable {
         //Call Draw
         if(drawingLine){
             Draw(g);
-        }        
+        }      
         
         //Old ArrayList
         fDraw.AddLines(g);

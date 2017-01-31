@@ -54,14 +54,14 @@ public class Line extends Tools{
       
     //TODO: How do i save this shape into a arrayList?
     public void draw(Graphics g, int code,Point str,Point end, boolean b, CreateInput mouse){ 
+              
         if(code == 1){ // line
             shapes.add(new PointPair(str, point));
+            color.add(g.getColor());
         }else{ //poly
-            this.str = str;
             shapes.add(new PointPair(str, point));
+            color.add(g.getColor());
         }
-        
-        this.str = str;
         
         if(!b){
             color.add(g.getColor());
@@ -71,7 +71,8 @@ public class Line extends Tools{
     }
  
     public void AddShapes(Graphics g){
-    for (int i = 0; i < shapes.size() - 1; ++i) {
+        System.out.print(shapes.size()+"----\n");
+    for (int i = 0; i < shapes.size() - 1; i++) {
             // Adding a null into the list is used
             // for breaking up the lines when
             // there are two or more lines
