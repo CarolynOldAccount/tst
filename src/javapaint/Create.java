@@ -246,9 +246,6 @@ public class Create extends JFrame implements Runnable {
     }
 
     public void init() {
-        if (str == null) {
-            str = mouse.getPosition();
-        }
          fDraw = new FreeDraw(canvas);
          lDraw = new Line(canvas);
          rDraw = new RectangleShape(canvas);
@@ -305,19 +302,20 @@ public class Create extends JFrame implements Runnable {
                 
         if (mouse.buttonDownOnce(MouseEvent.BUTTON1)) {
             str = mouse.getPosition();
+            System.out.print(str.getLocation()+"]]]]]]\n");
             drawingLine = true;
         }
         // if the button is down, add line point
         if (mouse.buttonDown(MouseEvent.BUTTON1)) {
-            str = mouse.getPosition();
             mouseDown = true;
         } else if (drawingLine){
             mouseDown = false; //if mouse id down
             drawingLine = false; //if started to draw
-           if(actionCode == 1){
+           
+            if(actionCode == 1){
                 fDraw.setArrayLines(null);
             }else{
-               Draw(g);
+              // Draw(g);
             }
         }
         
@@ -350,14 +348,15 @@ public class Create extends JFrame implements Runnable {
         g.drawLine(point.x, point.y, point.x, point.y - 10);
 
         //Call Draw
-        if(drawingLine){
-            Draw(g);
-        }      
-        
-        //Old ArrayList
-        fDraw.AddLines(g);
-        lDraw.AddShapes(g);
-        rDraw.AddShapes(g);
+        if( str != null){
+            if(drawingLine){
+                Draw(g);
+            }
+            //Old ArrayList
+            fDraw.AddLines(g);
+            lDraw.AddShapes(g);
+            rDraw.AddShapes(g);
+        }
     }
 /***********************************************************/
     private void Draw(Graphics g){

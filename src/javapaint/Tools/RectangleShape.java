@@ -59,15 +59,14 @@ public class RectangleShape extends Tools{
     }
     
     public void AddShapes(Graphics g){
-        System.out.print(shapes.size()+", boc \n");
         for (int i = 0; i < shapes.size() - 1; i++) {
+      //  System.out.print(shapes.size()+", boc \n");
               Rectangle r = shapes.get(i);
-              g.setColor(color.get(i));
             // Adding a null into the list is used
             // for breaking up the lines when
             // there are two or more lines
             // that are not connected
-                if (!(shapes == null)) {
+                if (!(shapes == null)&& color.get(i)!=null) {
                     g.setColor(color.get(i));   
                     g.drawRect(r.x, r.y, r.width, r.height);
                 }
