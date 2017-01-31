@@ -7,6 +7,7 @@ package javapaint.Tools;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import static java.awt.Color.RED;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Shape;
@@ -38,6 +39,7 @@ public class FreeDraw extends Tools{
     
     public void setArrayLines( Point p) {
         lines.add(p);
+        color.add(Color.RED);
     }
     
     public void draw(Graphics g, CreateInput mouse) {
@@ -57,7 +59,7 @@ public class FreeDraw extends Tools{
             // that are not connected
           
             if (!(p1 == null || p2 == null)) {
-              //  g.setColor(color.get(i));
+                g.setColor(color.get(i));
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         }
