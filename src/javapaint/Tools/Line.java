@@ -24,6 +24,11 @@ public class Line extends Tools{
         shapes.clear();
         color.clear();
     }
+
+    @Override
+    protected ArrayList<Color> getArrayColor() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
     public class PointPair
     {
@@ -46,20 +51,9 @@ public class Line extends Tools{
   public Line(Canvas canvas){
     mouse = new CreateInput(canvas);
   }     
-    
-
-     @Override
-    public ArrayList<Color> getArrayColor() {
-        return color;
-    }
-    
-    public ArrayList<PointPair> getArrayLines() {
-        return shapes;
-    }
-
-    
+      
     //TODO: How do i save this shape into a arrayList?
-    public void draw(Graphics g, int code,Point str, boolean b){ 
+    public void draw(Graphics g, int code,Point str,Point end, boolean b, CreateInput mouse){ 
         if(code == 1){ // line
             shapes.add(new PointPair(str, point));
         }else{ //poly
@@ -68,6 +62,12 @@ public class Line extends Tools{
         }
         
         this.str = str;
+        
+        if(!b){
+            color.add(g.getColor());
+            shapes.add(new PointPair(str, end));
+        }
+        
     }
  
     public void AddShapes(Graphics g){

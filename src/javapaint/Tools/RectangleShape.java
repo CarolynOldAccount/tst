@@ -40,16 +40,19 @@ public class RectangleShape extends Tools{
         return shapes;
     }
 
-    public void draw(Graphics g, Point str, boolean relase) {
+    public void draw(Graphics g, Point str, boolean relase, CreateInput mouse) {
+       
         int xValue = Math.min(str.x, point.x);
         int yValue = Math.min(str.y, point.y);
         int width = Math.abs(str.x - point.x);
         int height = Math.abs(str.y - point.y);
                 
         Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
+       if(relase){
         g.setColor(g.getColor());
         shapes.add(rectangle);
         //Add action Listener for the relase save
+        }
     }
     
     public void AddShapes(Graphics g){

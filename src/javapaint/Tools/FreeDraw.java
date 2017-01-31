@@ -22,10 +22,9 @@ public class FreeDraw extends Tools{
     private ArrayList<Point> lines = new ArrayList<Point>();
     private ArrayList<Color> color = new ArrayList<Color>();
     private Color colorNow;
-    private CreateInput mouse;
     
   public FreeDraw(Canvas canvas){
-    mouse = new CreateInput(canvas);
+    
   }  
    
     @Override
@@ -41,10 +40,9 @@ public class FreeDraw extends Tools{
         return lines;
     }
     
-    public void draw(Graphics g) {
+    public void draw(Graphics g, CreateInput mouse) {
             lines.add(mouse.getPosition());
             color.add(g.getColor());
-            System.out.print("Down\n");
     }   
     
     public void AddLines(Graphics g){
@@ -57,6 +55,7 @@ public class FreeDraw extends Tools{
             // there are two or more lines
             // that are not connected
             if (!(p1 == null || p2 == null)) {
+                System.out.print("Line:"+p1.x+p1.y+p2.x+p2.y+"\n");
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         }
