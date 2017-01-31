@@ -43,7 +43,7 @@ public class RectangleShape extends Tools{
     public void draw(Graphics g, Point str, boolean relase) {
         int xValue = Math.min(str.x, point.x);
         int yValue = Math.min(str.y, point.y);
-        int width = Math.abs(str.x - point.y);
+        int width = Math.abs(str.x - point.x);
         int height = Math.abs(str.y - point.y);
                 
         Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
