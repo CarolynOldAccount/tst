@@ -112,7 +112,8 @@ public class Create extends JFrame implements Runnable {
     }
 
     /**
-     *  params: @int p, is the action the icon switches to
+     * Called so to change the icon on select
+     * @param p
      */
     public void changeIcon(int p) {
         switch (p) {
@@ -378,6 +379,7 @@ public class Create extends JFrame implements Runnable {
             
             mouseDown = false; //if mouse id down
             drawingLine = false; //if started to draw
+            end = point;
             
              if (actionCode == 2 || actionCode == 3) {
                 lDraw.setEND(end);
@@ -405,12 +407,16 @@ public class Create extends JFrame implements Runnable {
                     //shapes.add(new PointPair(str, end));
                     break;
                 case 4:
-                    rDraw.save(g);
-                                 System.out.print("Draw End 4 "+end+"\n");
-                    //shapesRec.add(rectangle);
+                     int xValue = Math.min(str.x, end.x);
+                     int yValue = Math.min(str.y, end.y);
+                     int width = Math.abs(str.x - end.x);
+                     int height = Math.abs(str.y - end.y);
+                     rectangle = new Rectangle(xValue, yValue, width, height);
+       
+                     rDraw.save(g, rectangle);
+                     System.out.print("Draw End 4: "+end.x+"; " +end.y+"\n");
                     break;
                 default:
-                    break;
             }
 
         }
@@ -437,7 +443,7 @@ public class Create extends JFrame implements Runnable {
      
     private void render(Graphics g) {      
         
-         int notches = mouse.getNotches();
+       int notches = mouse.getNotches();
        if (notches < 0) { //neg up
            //change tool
            if(actionCode != 4){
@@ -447,7 +453,7 @@ public class Create extends JFrame implements Runnable {
            actionCode = 1;
            changeIcon(actionCode);
            }
-       } else { // pos down
+       } else if (notches > 0) { // pos down
            //change color
            if(colorIndex != 4){
            colorIndex += 1;
@@ -455,7 +461,6 @@ public class Create extends JFrame implements Runnable {
            colorIndex = 1;
            }
        }
-        
         Color colors = COLORS[colorIndex-1]; 
         g.setColor(colors);
         
@@ -500,7 +505,7 @@ public class Create extends JFrame implements Runnable {
                 int yValue = Math.min(str.y, point.y);
                 int width = Math.abs(str.x - point.x);
                 int height = Math.abs(str.y - point.y);
-                end = point;
+                //end = point;
                 Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
                 g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
            
