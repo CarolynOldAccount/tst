@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Shape;
 import java.util.ArrayList;
+import javapaint.Create;
 import javapaint.CreateInput;
 
 /**
@@ -25,11 +26,11 @@ public class Line extends Tools{
         color.clear();
     }
 
-    @Override
-    protected ArrayList<Color> getArrayColor() {
+    public void save(Graphics g, Create.PointPair s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-   
+
+
     public class PointPair
     {
         Point left;
@@ -44,19 +45,22 @@ public class Line extends Tools{
     
     private ArrayList<PointPair> shapes = new ArrayList<PointPair>();
     private ArrayList<Color> color = new ArrayList<Color>();
-    public Point str, end = new Point(0, 0);    
-    private Point point = new Point(0, 0);
+    public Point str, end;    
+    private Point point;
     private CreateInput mouse;
     
     public void setSTR(Point str){
         this.str = str;
+    }
+    public void setEND(Point end){
+        this.end = end;
     }
      
   public Line(Canvas canvas){
     mouse = new CreateInput(canvas);
   }     
       
-    //TODO: How do i save this shape into a arrayList?
+    //TODO: Not used delete
     public void draw(Graphics g, int code, boolean b, CreateInput mouse){ 
     
         if(code == 1){ // line
@@ -75,8 +79,9 @@ public class Line extends Tools{
      public void save(Graphics g){
         
          color.add(g.getColor());
-         shapes.add(new PointPair(str, end));
+         shapes.add(new PointPair(str,end));
        
+        System.out.print("Line save: "+str+","+end+"\n");
     }
      
     public void AddShapes(Graphics g){

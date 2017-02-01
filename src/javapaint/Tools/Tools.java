@@ -20,7 +20,6 @@ public abstract class Tools {
     private Color[] COLORS = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK};
        
     
-    protected abstract ArrayList<Color> getArrayColor();
     protected abstract void clear();
     
     public Color getColor(int index){

@@ -1,6 +1,7 @@
 package javapaint;
 
 import java.awt.*;
+import static java.awt.Color.BLACK;
 import static java.awt.Color.BLUE;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.RED;
@@ -8,13 +9,36 @@ import static java.awt.Color.WHITE;
 import static java.awt.Color.black;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.*;
 import javax.swing.*;
 import java.awt.Graphics;
 import javapaint.Tools.*;
 
+/**
+ *
+ * @author carol_8wybosj
+ */
 public class Create extends JFrame implements Runnable {
 
+    /**
+     *
+     */
+    public class PointPair
+    {
+        Point left;
+        Point right;
+        
+        /**
+         *
+         * @param l
+         * @param r
+         */
+        public PointPair(Point l, Point r)
+        {
+            left = l;
+            right = r;
+        }
+    }
+    
     private final FrameRate frameRate;
     private BufferStrategy bs;
     private volatile boolean running;
@@ -24,23 +48,26 @@ public class Create extends JFrame implements Runnable {
     private CreateInput mouse;
     private KeyboardInput keyboard;
     private final Point point = new Point(0, 0);
-
+/*
     private final ArrayList<Point> lines = new ArrayList<>();
-    private final ArrayList<Shape> shapes = new ArrayList<>();
-    private final ArrayList<Color> color = new ArrayList<>();
-    
+    private final ArrayList<Rectangle> shapesRec = new ArrayList<>();
+    private final ArrayList<Shape> shapesLin = new ArrayList<>();
+    private final ArrayList<Color> colorRec = new ArrayList<>();
+    private final ArrayList<Color> colorLin = new ArrayList<>();
+*/
     FreeDraw fDraw;
     Line lDraw;
     RectangleShape rDraw;
+    Rectangle rectangle;
 
     private boolean drawingLine;
 
     int current = 1;
     int actionCode = 1;
-    JButton freeBrush; //1
-    JButton lineBrush; //2
-    JButton polyLine; //3
-    JButton rectangleBrush; //4
+    JButton freeBrush; //1 code
+    JButton lineBrush; //2 code
+    JButton polyLine; //3 code
+    JButton rectangleBrush; //4 code
     Point strRec, endRec, str, end;
     JButton RedB, GreenB, BlueB, BlackB;
     JPanel pannelTool;
@@ -51,14 +78,13 @@ public class Create extends JFrame implements Runnable {
     private int colorIndex;
 
     /**
-     *Set Up
+     * Set Up of the create object
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public Create() {
         frameRate = new FrameRate();
         pannelTool = new JPanel();
         buttonHolder = Box.createVerticalBox();
-        
+
         freeBrush = setButton("C:/Users/carol_8wybosj/OneDrive/Documents/NetBeansProjects/JavaPaint/src/javapaint/Images/CurvInUse.png");
         lineBrush = setButton("C:/Users/carol_8wybosj/OneDrive/Documents/NetBeansProjects/JavaPaint/src/javapaint/Images/LineNotInUse.png");
         polyLine = setButton("C:/Users/carol_8wybosj/OneDrive/Documents/NetBeansProjects/JavaPaint/src/javapaint/Images/PolyLineNotInUse.png");
@@ -73,21 +99,20 @@ public class Create extends JFrame implements Runnable {
         buttonHolder.add(polyLine);
         buttonHolder.add(rectangleBrush);
 
-        
-        buttonHolder.add(BlackB);
         buttonHolder.add(RedB);
         buttonHolder.add(GreenB);
         buttonHolder.add(BlueB);
-        
+        buttonHolder.add(BlackB);
+
         pannelTool.add(buttonHolder);
 
         this.add(buttonHolder, BorderLayout.WEST);
         disableCursor();
         this.setVisible(true);
     }
-    
-    /*
-     *  params: @int p, is the action th icon switches to
+
+    /**
+     *  params: @int p, is the action the icon switches to
      */
     public void changeIcon(int p) {
         switch (p) {
@@ -119,6 +144,10 @@ public class Create extends JFrame implements Runnable {
         }
     }
 
+    
+    /**
+     *Setting of all tool buttons
+     */ 
     private JButton setButton(String png) {
         JButton button = new JButton();
         Icon buttonIcon = new ImageIcon(png);
@@ -156,13 +185,15 @@ public class Create extends JFrame implements Runnable {
         return button;
     }
 
+    /**
+     * Setting of all the colorButtons
+     */
+    
     private JButton setColorButton(int i) {
         JButton button = new JButton();
 
         //Add Listener to JButton
         button.addActionListener((ActionEvent e) -> {
-            //logger.info("Action Preformed" + actionCode);
-            //  current = colorIndex;
             Object source = e.getSource();
             if (RedB == source) {
                 colorIndex = 1;
@@ -177,7 +208,7 @@ public class Create extends JFrame implements Runnable {
                 colorIndex = 4;
             }
         });
-       
+
         switch (i) {
             case 1:
                 button.setBackground(RED);
@@ -192,7 +223,7 @@ public class Create extends JFrame implements Runnable {
                 button.setSize(30, 20);
                 break;
             case 4:
-                button.setBackground(black);
+                button.setBackground(BLACK);
                 button.setSize(30, 20);
                 break;
             default:
@@ -201,7 +232,14 @@ public class Create extends JFrame implements Runnable {
         return button;
     }
 
-/******************************************************************************/
+    /**
+     * ***************************************************************************
+     * 
+     */
+   
+    /**
+     *From book edited foe more buttons and GUI
+     */
     protected void createAndShowGUI() {
         canvas = new Canvas();
         canvas.setSize(1280, 720);
@@ -211,7 +249,7 @@ public class Create extends JFrame implements Runnable {
         setTitle("Java Paint");
         setIgnoreRepaint(true);
         pack();
-       
+
         // Add key listeners
         keyboard = new KeyboardInput();
         canvas.addKeyListener(keyboard);
@@ -222,11 +260,12 @@ public class Create extends JFrame implements Runnable {
         canvas.addMouseListener(mouse);
         canvas.addMouseMotionListener(mouse);
 
-        //Mouse wheel listener TODO: ADD the up to swtich tools and not color?
+        //Mouse wheel listener 
         canvas.addMouseWheelListener(mouse);
-        
+      
+
         init();
-        setVisible(true);
+        setVisible(true);       
 
         canvas.createBufferStrategy(2);
         bs = canvas.getBufferStrategy();
@@ -236,6 +275,9 @@ public class Create extends JFrame implements Runnable {
         gameThread.start();
     }
 
+    /**
+     *From Book unedited
+     */
     @Override
     public void run() {
         running = true;
@@ -245,18 +287,28 @@ public class Create extends JFrame implements Runnable {
         }
     }
 
+    /**
+     * ads canvas to the tool objects
+     */
     public void init() {
-         fDraw = new FreeDraw(canvas);
-         lDraw = new Line(canvas);
-         rDraw = new RectangleShape(canvas);
+        colorIndex = 1;
+        fDraw = new FreeDraw(canvas);
+        lDraw = new Line(canvas);
+        rDraw = new RectangleShape(canvas);
     }
 
+    /**
+     *From Book unedited
+     */
     private void gameLoop() {
         processInput();
         renderFrame();
         sleep(10L);
     }
 
+    /**
+     *From Book unedited
+     */
     void renderFrame() {
         do {
             do {
@@ -275,17 +327,24 @@ public class Create extends JFrame implements Runnable {
         } while (bs.contentsLost());
     }
 
+    /**
+     *From Book unedited
+     */
     private void sleep(long sleep) {
         try {
             Thread.sleep(sleep);
         } catch (InterruptedException ex) {
         }
-    } 
+    }
+
     
+    /**
+     *From Book edited for other types of tools
+     */
     private void processInput() {
         keyboard.poll();
         mouse.poll();
-          Graphics g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();
         if (canvas != null) {
             if (point.x + 25 < 0) {
                 point.x = canvas.getWidth() - 1;
@@ -299,39 +358,68 @@ public class Create extends JFrame implements Runnable {
                 point.y = -25;
             }
         }
-                
+
         if (mouse.buttonDownOnce(MouseEvent.BUTTON1)) {
             str = mouse.getPosition();
-            if(actionCode == 2 || actionCode == 3){
+            
+            if (actionCode == 2 || actionCode == 3) {
                 lDraw.setSTR(str);
-            }else if(actionCode == 4){
+            } else if (actionCode == 4) {
                 rDraw.setSTR(str);
             }
+          
             drawingLine = true;
         }
         // if the button is down, add line point
         if (mouse.buttonDown(MouseEvent.BUTTON1)) {
             mouseDown = true;
-        } else if (drawingLine){
+            
+        } else if (drawingLine) {
+            
             mouseDown = false; //if mouse id down
             drawingLine = false; //if started to draw
-            if(actionCode == 1){
-                fDraw.setArrayLines(null);
-            }else if(actionCode == 2 || actionCode == 3){
-                lDraw.save(g);
+            
+             if (actionCode == 2 || actionCode == 3) {
+                lDraw.setEND(end);
+                     System.out.print("Draw End"+end+"\n");
+            } else if (actionCode == 4) {
+                rDraw.setEND(end);
             }
-            else if (actionCode == 4){
-                rDraw.save(g);
+            
+            switch (actionCode) {
+                case 1:
+                    fDraw.setArrayLines(null);
+                    break;
+                case 2:
+                case 3:
+                    if(actionCode==2){
+                             System.out.print("Draw End 2 "+end+"\n");
+                        lDraw.save(g);
+                    }else{
+                        if(mouse.buttonDownOnce(MouseEvent.BUTTON2)){
+                                 System.out.print("Draw End 3 "+end+"\n");
+                            lDraw.save(g);
+                        }
+                    }
+                    // color.add(g.getColor());
+                    //shapes.add(new PointPair(str, end));
+                    break;
+                case 4:
+                    rDraw.save(g);
+                                 System.out.print("Draw End 4 "+end+"\n");
+                    //shapesRec.add(rectangle);
+                    break;
+                default:
+                    break;
             }
-                
+
         }
         
         // if 'C' is down, clear the lines
         if (keyboard.keyDownOnce(KeyEvent.VK_C)) {
             clear();
         }
-        //scroll of wheel too //++ unless is at 4 them 1
-
+               
         Point p = mouse.getPosition();
         if (mouse.isRelative()) {
             point.x += p.x;
@@ -341,13 +429,36 @@ public class Create extends JFrame implements Runnable {
             point.y = p.y;
         }
     }
-    
-    private void render(Graphics g) {
 
-        Color colors = COLORS[Math.abs(colorIndex % COLORS.length)];
+    
+    /**
+     *From Book edited for scroll and rendering
+     */
+     
+    private void render(Graphics g) {      
+        
+         int notches = mouse.getNotches();
+       if (notches < 0) { //neg up
+           //change tool
+           if(actionCode != 4){
+           actionCode += 1;
+           changeIcon(actionCode);
+           }else{
+           actionCode = 1;
+           changeIcon(actionCode);
+           }
+       } else { // pos down
+           //change color
+           if(colorIndex != 4){
+           colorIndex += 1;
+           }else{
+           colorIndex = 1;
+           }
+       }
+        
+        Color colors = COLORS[colorIndex-1]; 
         g.setColor(colors);
         
-        //todo fix this line
         frameRate.calculate();
         g.drawLine(point.x + 10, point.y, point.x, point.y);
         g.drawLine(point.x, point.y + 10, point.x, point.y);
@@ -355,35 +466,55 @@ public class Create extends JFrame implements Runnable {
         g.drawLine(point.x, point.y, point.x, point.y - 10);
 
         //Call Draw
-       
-            if(drawingLine){
-                Draw(g);
-            }
-            //Old ArrayList
-            fDraw.AddLines(g);
-            lDraw.AddShapes(g);
-            rDraw.AddShapes(g);
-   
+        if (drawingLine) {
+            Draw(g);
+        }
+
+        //Old ArrayList
+        fDraw.AddLines(g);
+        lDraw.AddShapes(g);
+        rDraw.AddShapes(g);
     }
-/***********************************************************/
-    private void Draw(Graphics g){
-    
-        switch(actionCode){
+
+    /**
+     * Draws Shape to screen
+     */
+    private void Draw(Graphics g) {
+            
+        switch (actionCode) {
             case 1:
                 fDraw.draw(g, mouse);
                 break;
-            case 2: case 3:
-                lDraw.draw(g, actionCode, mouseDown, mouse);
+                
+            case 2:
+            case 3:
+                lDraw.setSTR(str);
+                // lDraw.draw(g, actionCode, mouseDown, mouse);
+                g.drawLine(str.x, str.y, point.x, point.y);
+                end = point;
                 break;
+                
             case 4:
-                rDraw.draw(g, mouseDown, mouse);
+                // rDraw.draw(g, mouseDown, mouse);
+                int xValue = Math.min(str.x, point.x);
+                int yValue = Math.min(str.y, point.y);
+                int width = Math.abs(str.x - point.x);
+                int height = Math.abs(str.y - point.y);
+                end = point;
+                Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
+                g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+           
                 break;
+                
             default:
                 System.out.print("Draw Error\n");
         }
-    
     }
+
     
+    /**
+     *From Book unedited
+     */
     private void disableCursor() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         Image image = tk.createImage("");
@@ -394,19 +525,25 @@ public class Create extends JFrame implements Runnable {
 
     }
 
+    /**
+     *From Book unedited
+     */
     protected void onWindowClosing() {
         try {
             running = false;
             gameThread.join();
         } catch (InterruptedException e) {
-            System.out.println("Error "+e);
+            System.out.println("Error " + e);
         }
         System.exit(0);
     }
 
-    protected void clear(){
-    rDraw.clear();
-    lDraw.clear();
-    fDraw.clear();
+    /**
+     *Clears all arrays
+     */
+    protected void clear() {
+        rDraw.clear();
+        lDraw.clear();
+        fDraw.clear();
     }
 }

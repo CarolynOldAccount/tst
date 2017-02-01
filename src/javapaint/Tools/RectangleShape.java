@@ -27,21 +27,20 @@ public class RectangleShape extends Tools{
     private final Point point = new Point(0, 0);
     private final CreateInput mouse;
     Rectangle rectangle;
-      
+    
+    public void setEND(Point end){
+        this.end = end;
+    }
+ 
     public RectangleShape(Canvas canvas){
         mouse = new CreateInput(canvas);
-    }  
-        
-    @Override
-    public ArrayList<Color> getArrayColor() {
-        return color;
-    }
-    
+    }      
     
     public void setSTR(Point str){
         this.str = str;
     }
     
+    //Todo: delete not in use
     public void draw(Graphics g, boolean relase, CreateInput mouse) {
        
         int xValue = Math.min(str.x, point.x);
@@ -56,16 +55,28 @@ public class RectangleShape extends Tools{
     }
     
     public void save(Graphics g){
-        
+        int xValue = Math.min(str.x, end.x);
+        int yValue = Math.min(str.y, end.y);
+        int width = Math.abs(str.x - end.x);
+        int height = Math.abs(str.y - end.y);
+        rectangle = new Rectangle(xValue, yValue, width, height);
+       
         g.setColor(g.getColor());
         shapes.add(rectangle);
+        System.out.println("Saved"+ rectangle.x);
         //Add action Listener for the relase save
         
     }
     
+    //not used
+     public void save(Graphics g,Rectangle rectangleInput){
+        g.setColor(g.getColor());
+        shapes.add(rectangleInput);
+        //Add action Listener for the relase save   
+    }
+    
     public void AddShapes(Graphics g){
-        if (shapes != null)
-        {
+      
         for (int i = 0; i < shapes.size() - 1; i++) {
         System.out.print(shapes.size()+", boc \n");
               Rectangle r = shapes.get(i);
@@ -78,7 +89,6 @@ public class RectangleShape extends Tools{
                     g.drawRect(r.x, r.y, r.width, r.height);
                 }
             }
-        }
     }
 
     @Override

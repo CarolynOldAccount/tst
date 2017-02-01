@@ -28,11 +28,7 @@ public class FreeDraw extends Tools{
     
   }  
    
-    @Override
-    public ArrayList<Color> getArrayColor() {
-        return color;
-    }
-    
+      
      public void setColor(Color c){
         colorNow = c;
     }
