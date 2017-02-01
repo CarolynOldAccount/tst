@@ -83,7 +83,6 @@ public class Line extends Tools{
      
     public void AddShapes(Graphics g){
     for (int i = 0; i < shapes.size() - 1; i++){
-        System.out.print("Line size: "+shapes.size()+"\n");
             // Adding a null into the list is used
             // for breaking up the lines when
             // there are two or more lines
