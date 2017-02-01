@@ -57,7 +57,6 @@ public class FreeDraw extends Tools{
             // for breaking up the lines when
             // there are two or more lines
             // that are not connected
-          
             if (!(p1 == null || p2 == null)) {
                 g.setColor(color.get(i));
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);

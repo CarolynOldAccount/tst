@@ -302,7 +302,11 @@ public class Create extends JFrame implements Runnable {
                 
         if (mouse.buttonDownOnce(MouseEvent.BUTTON1)) {
             str = mouse.getPosition();
-            System.out.print(str.getLocation()+"]]]]]]\n");
+            if(actionCode == 2 || actionCode == 3){
+                lDraw.setSTR(str);
+            }else if(actionCode == 4){
+                rDraw.setSTR(str);
+            }
             drawingLine = true;
         }
         // if the button is down, add line point
@@ -311,12 +315,15 @@ public class Create extends JFrame implements Runnable {
         } else if (drawingLine){
             mouseDown = false; //if mouse id down
             drawingLine = false; //if started to draw
-           
             if(actionCode == 1){
                 fDraw.setArrayLines(null);
-            }else{
-              // Draw(g);
+            }else if(actionCode == 2 || actionCode == 3){
+                lDraw.save(g);
             }
+            else if (actionCode == 4){
+                rDraw.save(g);
+            }
+                
         }
         
         // if 'C' is down, clear the lines
@@ -348,7 +355,7 @@ public class Create extends JFrame implements Runnable {
         g.drawLine(point.x, point.y, point.x, point.y - 10);
 
         //Call Draw
-        if( str != null){
+       
             if(drawingLine){
                 Draw(g);
             }
@@ -356,7 +363,7 @@ public class Create extends JFrame implements Runnable {
             fDraw.AddLines(g);
             lDraw.AddShapes(g);
             rDraw.AddShapes(g);
-        }
+   
     }
 /***********************************************************/
     private void Draw(Graphics g){
@@ -366,10 +373,10 @@ public class Create extends JFrame implements Runnable {
                 fDraw.draw(g, mouse);
                 break;
             case 2: case 3:
-                lDraw.draw(g, actionCode, str, end, mouseDown, mouse);
+                lDraw.draw(g, actionCode, mouseDown, mouse);
                 break;
             case 4:
-                rDraw.draw(g, str, mouseDown, mouse);
+                rDraw.draw(g, mouseDown, mouse);
                 break;
             default:
                 System.out.print("Draw Error\n");

@@ -26,6 +26,7 @@ public class RectangleShape extends Tools{
     public Point str = new Point(0, 0), end = new Point(0, 0);    
     private final Point point = new Point(0, 0);
     private final CreateInput mouse;
+    Rectangle rectangle;
       
     public RectangleShape(Canvas canvas){
         mouse = new CreateInput(canvas);
@@ -35,32 +36,38 @@ public class RectangleShape extends Tools{
     public ArrayList<Color> getArrayColor() {
         return color;
     }
-  
     
-    public ArrayList<Rectangle> getArrayLines() {
-        return shapes;
+    
+    public void setSTR(Point str){
+        this.str = str;
     }
-
-    public void draw(Graphics g, Point str, boolean relase, CreateInput mouse) {
+    
+    public void draw(Graphics g, boolean relase, CreateInput mouse) {
        
         int xValue = Math.min(str.x, point.x);
         int yValue = Math.min(str.y, point.y);
         int width = Math.abs(str.x - point.x);
         int height = Math.abs(str.y - point.y);
                 
-        Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
-        g.setColor(g.getColor());
-        shapes.add(rectangle);
-       if(relase){
+        
+        rectangle = new Rectangle(xValue, yValue, width, height);
+        g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    
+    }
+    
+    public void save(Graphics g){
+        
         g.setColor(g.getColor());
         shapes.add(rectangle);
         //Add action Listener for the relase save
-        }
+        
     }
     
     public void AddShapes(Graphics g){
+        if (shapes != null)
+        {
         for (int i = 0; i < shapes.size() - 1; i++) {
-      //  System.out.print(shapes.size()+", boc \n");
+        System.out.print(shapes.size()+", boc \n");
               Rectangle r = shapes.get(i);
             // Adding a null into the list is used
             // for breaking up the lines when
@@ -71,6 +78,7 @@ public class RectangleShape extends Tools{
                     g.drawRect(r.x, r.y, r.width, r.height);
                 }
             }
+        }
     }
 
     @Override
