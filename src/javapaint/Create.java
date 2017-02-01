@@ -20,7 +20,7 @@ import javapaint.Tools.*;
 public class Create extends JFrame implements Runnable {
 
     /**
-     *
+     *stores a point of a line
      */
     public class PointPair {
 
@@ -29,8 +29,8 @@ public class Create extends JFrame implements Runnable {
 
         /**
          *
-         * @param l
-         * @param r
+         * @param l left
+         * @param r right
          */
         public PointPair(Point l, Point r) {
             left = l;
@@ -47,13 +47,7 @@ public class Create extends JFrame implements Runnable {
     private CreateInput mouse;
     private KeyboardInput keyboard;
     private final Point point = new Point(0, 0);
-    /*
-    private final ArrayList<Point> lines = new ArrayList<>();
-    private final ArrayList<Rectangle> shapesRec = new ArrayList<>();
-    private final ArrayList<Shape> shapesLin = new ArrayList<>();
-    private final ArrayList<Color> colorRec = new ArrayList<>();
-    private final ArrayList<Color> colorLin = new ArrayList<>();
-     */
+   
     FreeDraw fDraw;
     Line lDraw;
     RectangleShape rDraw;
@@ -365,63 +359,63 @@ public class Create extends JFrame implements Runnable {
         }
 
         if (mouse.buttonDownOnce(MouseEvent.BUTTON1)) {
-            if(str == null){
-            str = mouse.getPosition();
-            if (actionCode == 2 || actionCode == 3) {
-                lDraw.setSTR(str);
-            } else if (actionCode == 4) {
-                rDraw.setSTR(str);
-            }
-            drawingLine = true;
-            }
-            else
-            {
+            if (str == null) {
+                str = mouse.getPosition();
+                if (actionCode == 2 || actionCode == 3) {
+                    lDraw.setSTR(str);
+                } else if (actionCode == 4) {
+                    rDraw.setSTR(str);
+                }
+                drawingLine = true;
+            } else {
                 end = mouse.getPosition();
 
                 //For line singel
-                if (actionCode == 2 || actionCode == 3)
-                {
+                if (actionCode == 2 || actionCode == 3) {
                     lDraw.setEND(end);
                     System.out.print("Draw End 2 " + end + "\n");
+
                     lDraw.save(g);
-                    if(actionCode == 3){//will keep going until right click
+                    if (actionCode == 3) {//will keep going until right click
                         str = end;
+                        lDraw.setSTR(end);
                     }
 
-                 //For Rectangle
-                } else if (actionCode == 4) 
-                {
+                    //For Rectangle
+                } else if (actionCode == 4) {
                     rDraw.setEND(end);
                     end = point.getLocation();
                     rDraw.save(g);
                     System.out.print("Draw End 4: " + end.x + "; " + end.y + "\n");
                 }
-                if(actionCode!=3){ // since it needs the end point dont null
+                if (actionCode != 3) { // since it needs the end point dont null
                     drawingLine = false;
                     str = null;
                 }
             }
         }
 
-        // if the button is down, add line point
+        // if the button is down, add line point only for free draw
         if (mouse.buttonDown(MouseEvent.BUTTON1)) {
             //Called Draw here for other file from book
-
         } else if (drawingLine) {
             //draw shape
             if (actionCode == 1) {
                 fDraw.setArrayLines(null);
-            } else {                
-                 if (mouse.buttonDownOnce(MouseEvent.BUTTON2)&& actionCode==3) {
-                    end = mouse.getPosition();
-                     lDraw.setEND(end);
-                     System.out.print("Draw End 3 " + end + "\n");
-                    lDraw.save(g);
-                    drawingLine = false;
-                    str = null;
-                 }
             }
-        }// end of else
+        }
+
+        if (mouse.buttonDownOnce(MouseEvent.BUTTON3)) {
+                if(str != null && actionCode == 3)
+                {
+                  end = mouse.getPosition();
+                  lDraw.setEND(end);
+                  System.out.print("Draw End 3 " + end + "\n");
+                  lDraw.save(g);
+                  drawingLine = false;
+                  str = null;
+                }
+        }
 
         // if 'C' is down, clear the lines
         if (keyboard.keyDownOnce(KeyEvent.VK_C)) {
