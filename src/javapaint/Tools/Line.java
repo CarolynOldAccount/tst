@@ -61,13 +61,12 @@ public class Line extends Tools{
   }     
       
     //TODO: Not used delete
-    public void draw(Graphics g, int code, boolean b, CreateInput mouse){ 
+    public void draw(Graphics g, int code, CreateInput mouse){ 
     
         if(code == 1){ // line
              g.drawLine(str.x, str.y, point.x, point.y);
             //shapes.add(new PointPair(str, point));
            // color.add(g.getColor());
-            
         }else{ //poly
              g.drawLine(str.x, str.y, point.x, point.y);
           //  shapes.add(new PointPair(str, point));
@@ -77,10 +76,8 @@ public class Line extends Tools{
     }
  
      public void save(Graphics g){
-        
          color.add(g.getColor());
          shapes.add(new PointPair(str,end));
-       
         System.out.print("Line save: "+str+","+end+"\n");
     }
      

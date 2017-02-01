@@ -78,7 +78,7 @@ public class RectangleShape extends Tools{
     public void AddShapes(Graphics g){
       
         for (int i = 0; i < shapes.size() - 1; i++) {
-        System.out.print(shapes.size()+", boc \n");
+        System.out.print(shapes.size()+", size box \n");
               Rectangle r = shapes.get(i);
             // Adding a null into the list is used
             // for breaking up the lines when
