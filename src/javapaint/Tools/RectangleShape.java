@@ -10,12 +10,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.util.ArrayList;
 import javapaint.CreateInput;
 
 /**
- *
+ * Rectangle object
  * @author carol_8wybosj
  */
 public class RectangleShape extends Tools{
@@ -23,37 +22,40 @@ public class RectangleShape extends Tools{
     private final ArrayList<Rectangle> shapesBuffer = new ArrayList<>();
     private final ArrayList<Rectangle> shapes = new ArrayList<>();
     private final ArrayList<Color> color = new ArrayList<>();
+
     public Point str = new Point(0, 0), end = new Point(0, 0);    
     private final Point point = new Point(0, 0);
     private final CreateInput mouse;
     Rectangle rectangle;
     
+    /**
+     * setter of the end point
+     * @param end
+     */
     public void setEND(Point end){
         this.end = end;
     }
  
+    /**
+     * getting the canvas for the object
+     * @param canvas
+     */
     public RectangleShape(Canvas canvas){
         mouse = new CreateInput(canvas);
     }      
     
+    /**
+     * setter for the start point
+     * @param str
+     */
     public void setSTR(Point str){
         this.str = str;
     }
     
-    //Todo: delete not in use
-    public void draw(Graphics g, boolean relase, CreateInput mouse) {
-       
-        int xValue = Math.min(str.x, point.x);
-        int yValue = Math.min(str.y, point.y);
-        int width = Math.abs(str.x - point.x);
-        int height = Math.abs(str.y - point.y);
-                
-        
-        rectangle = new Rectangle(xValue, yValue, width, height);
-        g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    
-    }
-    
+    /**
+     * Saves the Rectangle to the ArrayList
+     * @param g
+     */
     public void save(Graphics g){
         int xValue = Math.min(str.x, end.x);
         int yValue = Math.min(str.y, end.y);
@@ -61,20 +63,14 @@ public class RectangleShape extends Tools{
         int height = Math.abs(str.y - end.y);
         rectangle = new Rectangle(xValue, yValue, width, height);
        
-        g.setColor(g.getColor());
-        shapes.add(rectangle);
-        System.out.println("Saved"+ rectangle.x);
-        //Add action Listener for the relase save
-        
+        color.add(g.getColor());
+        shapes.add(rectangle);        
     }
     
-    //not used
-     public void save(Graphics g,Rectangle rectangleInput){
-        g.setColor(g.getColor());
-        shapes.add(rectangleInput);
-        //Add action Listener for the relase save   
-    }
-    
+   /**
+     * Renders the lines to the screen
+     * @param g
+     */
     public void AddShapes(Graphics g){
       
         for (int i = 0; i < shapes.size() - 1; i++) {
@@ -84,13 +80,17 @@ public class RectangleShape extends Tools{
             // for breaking up the lines when
             // there are two or more lines
             // that are not connected
-                if (!(shapes == null)&& color.get(i)!=null) {
+            if(color.size()-1 > i)
+                if (!(r == null)&&color.get(i)!=null) {
                     g.setColor(color.get(i));   
                     g.drawRect(r.x, r.y, r.width, r.height);
                 }
             }
     }
 
+    /**
+     *Clears the screen
+     */
     @Override
     public void clear() {
         shapes.clear();

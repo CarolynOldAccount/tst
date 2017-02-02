@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import javapaint.CreateInput;
 
 /**
- *
+ * Super class to all of the tool objects
  * @author carol_8wybosj
  */
 public abstract class Tools {
     
     private Color[] COLORS = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK};
-       
-    
+        
     protected abstract void clear();
     
     public Color getColor(int index){
