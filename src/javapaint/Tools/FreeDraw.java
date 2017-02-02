@@ -50,7 +50,6 @@ public class FreeDraw extends Tools{
      */
     public void AddLines(Graphics g){
     for (int i = 0; i < lines.size() - 1; i++) {
-       // System.out.print("FreeDR"+lines.size()+"\n");
             Point p1 = lines.get(i);
             Point p2 = lines.get(i + 1);            
       

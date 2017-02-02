@@ -22,6 +22,7 @@ public class Line extends Tools{
     public void clear() {
         shapes.clear();
         color.clear();
+        str = null;
     }
 
     /**
@@ -91,7 +92,6 @@ public class Line extends Tools{
     public void save(Graphics g){
          color.add(g.getColor());
          shapes.add(new PointPair(str,end));
-        System.out.print("Line save: "+str+","+end+"\n");
     }
      
     /**
@@ -99,7 +99,7 @@ public class Line extends Tools{
      * @param g
      */
     public void AddShapes(Graphics g){
-    for (int i = 0; i < shapes.size() - 1; i++){
+    for (int i = 0; i < shapes.size(); i++){
             // Adding a null into the list is used
             // for breaking up the lines when
             // there are two or more lines

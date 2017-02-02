@@ -68,7 +68,7 @@ public class Create extends JFrame implements Runnable {
     boolean mouseDown = false;
 
     private final Color[] COLORS = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK};
-    private int colorIndex;
+    private int colorIndex = 4;
 
     /**
      * Set Up of the create object
@@ -150,8 +150,6 @@ public class Create extends JFrame implements Runnable {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //logger.info("Action Preformed" + actionCode);
-                // current = actionCode;
                 Object source = e.getSource();
                 if (source == freeBrush) {
                     actionCode = 1;
@@ -393,6 +391,9 @@ public class Create extends JFrame implements Runnable {
                     str = null;
                 }
             }
+            if (actionCode == 1) {
+                fDraw.setArrayLines(null);
+            }
         }
 
         // if the button is down, add line point only for free draw
@@ -415,6 +416,7 @@ public class Create extends JFrame implements Runnable {
                   drawingLine = false;
                   str = null;
                 }
+                
         }
 
         // if 'C' is down, clear the lines
@@ -468,9 +470,7 @@ public class Create extends JFrame implements Runnable {
         if (drawingLine) {
             Draw(g);
         }
-        //add save here??? 
-
-        processInput();
+       // processInput();
 
         //Old ArrayList
         fDraw.AddLines(g);
@@ -490,10 +490,8 @@ public class Create extends JFrame implements Runnable {
 
             case 2:
             case 3:
-                // lDraw.draw(g, actionCode, mouseDown, mouse);
                 g.drawLine(str.x, str.y, point.x, point.y);
                 break;
-
             case 4:
                 int xValue = Math.min(str.x, point.x);
                 int yValue = Math.min(str.y, point.y);
@@ -502,7 +500,6 @@ public class Create extends JFrame implements Runnable {
                 Rectangle rectangle = new Rectangle(xValue, yValue, width, height);
                 g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
                 break;
-
             default:
                 System.out.print("Draw Error\n");
         }
@@ -541,5 +538,6 @@ public class Create extends JFrame implements Runnable {
         rDraw.clear();
         lDraw.clear();
         fDraw.clear();
+        str = null;
     }
 }
