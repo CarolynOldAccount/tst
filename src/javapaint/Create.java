@@ -495,7 +495,6 @@ public class Create extends JFrame implements Runnable {
                 break;
 
             case 4:
-                // rDraw.draw(g, mouseDown, mouse);
                 int xValue = Math.min(str.x, point.x);
                 int yValue = Math.min(str.y, point.y);
                 int width = Math.abs(str.x - point.x);
